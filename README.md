@@ -1,8 +1,8 @@
 # Linear-Algebra
 Honor's Project for MA345-Linear Algebra
 
-Andrew Crutcher
-Description of Honor's Project Idea for MA345-740 Linear Algebra
+
+Description:
 
 This project is to fulfill my honor's contract for MA345-740 Linear Algebra
 at SEMO.
