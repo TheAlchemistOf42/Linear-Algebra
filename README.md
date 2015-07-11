@@ -19,3 +19,6 @@ matrices and give a menu allowing different operations like displaying a matrix,
 modifying a matrix size, adding two matrices, multiplication, finding determinant, and others.
 It would also check to make sure the operation could be completed for each
 matrix before attempting to do the operation.
+
+Link to Google Doc page explaining the setup of the code:
+https://docs.google.com/document/d/1zC__PzquC0U5d1MMeaQ3akxRd6hJQFV5UQyPw6T3Kd4/edit?usp=sharing
