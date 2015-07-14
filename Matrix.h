@@ -4,7 +4,7 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/12/2015
+Date:		7/13/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 

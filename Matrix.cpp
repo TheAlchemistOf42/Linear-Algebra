@@ -4,7 +4,7 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/12/2015
+Date:		7/13/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
@@ -100,9 +100,9 @@ void Matrix::interchange(int p_r1, int p_r2)
 	if (p_r1 <= m_rows && p_r1 > 0 && p_r2 <= m_rows && p_r2 > 0 && p_r1 != p_r2)
 	{
 		double temp;
+		int row2 = (p_r2 - 1)*m_columns;
 		for (int i = (p_r1 - 1)*m_columns; i < (p_r1*m_columns); i++)
 		{
-			int row2 = (p_r2 - 1)*m_columns;
 			temp = m_array[i];
 			m_array[i] = m_array[row2];
 			m_array[row2] = temp;
@@ -133,9 +133,9 @@ void Matrix::replacement(int p_rowDest, int p_row, double p_multiplier)
 {
 	if (p_rowDest <= m_rows && p_rowDest > 0 && p_row <= m_rows && p_row > 0 && p_rowDest != p_row)
 	{
+		int row2 = (p_row - 1)*m_columns;
 		for (int i = (p_rowDest - 1)*m_columns; i < (p_rowDest*m_columns); i++)
 		{
-			int row2 = (p_row - 1)*m_columns;
 			m_array[i] += p_multiplier*m_array[row2];
 			row2++;
 		}
