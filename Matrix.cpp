@@ -4,16 +4,13 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/13/2015
+Date:		7/18/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 /* To Do:
--Add documentation
--finish implmentation of Accessors and Mutators
--test added functions
--finish implmentation of operations, start with simple then harder
--test added functions
+-Implement setRow, setCol, checkOperation, operation*, determinant
+-test all added functions
 -see if I can optimize functions
 */
 #include"Matrix.h"
@@ -31,6 +28,7 @@ Matrix::Matrix()
 }
 
 // Explicit Constructor
+// Preconditions: p_r * p_c = length of p_array
 Matrix::Matrix(const double p_array[], int p_r, int p_c)
 {
 	m_rows = p_r;                 // Number of rows in matrix
@@ -56,10 +54,7 @@ Matrix::Matrix(const Matrix & orig)
 }
 
 // Deconstructor
-Matrix::~Matrix()
-{
-	delete [] m_array;
-}
+Matrix::~Matrix() { delete [] m_array; }
 
 /*---------------------------------Accessors----------------------------------*/
 
@@ -151,7 +146,55 @@ void Matrix::matrixScalar(double p_multiplier)
 		m_array[i] *= p_multiplier;
 }
 
+/* Purpose:
+Precondition:
+Postcondition:  */
+void Matrix::setElement(double p_term, int p_r, int p_c)
+{
+	if (p_r <= m_rows && p_r >= 1 && p_c <= m_columns && p_c >= 1)
+		m_array[(p_r - 1) * m_columns + p_c] = p_term;
+}
+
+/* Purpose:
+Precondition:
+Postcondition:  */
+void Matrix::setRow(const double p_array[], int p_size, int p_rowNum)
+{
+	// Need to implement this
+}
+
+/* Purpose:
+Precondition:
+Postcondition:  */
+void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
+{
+	// Need to implement this
+}
+
+/* Purpose:
+Precondition:
+Postcondition:  */
+void Matrix::resetMatrix(const double p_array[], int p_r, int p_c)
+{
+	m_rows = p_r;
+	m_columns = p_c;
+	m_size = p_r * p_c;
+	delete[] m_array;
+	m_array = new double[m_size];
+	for (int i = 0; i < m_size; i++)
+		m_array[i] = p_array[i];  // Array containin the elements of the matrix
+}
+
 /*---------------------------------Operations---------------------------------*/
+
+/* Purpose:
+Precondition:
+Postcondition:  */
+bool checkOperation(const Matrix & other, char oper)
+{
+	// Need to implement this
+	return false;
+}
 
 /* Purpose: Adds together two matrices
 Precondition: Intialized matrices and both be the same size
@@ -197,6 +240,7 @@ Postcondition: The difference of both matrices will be returned,
 else the original matrix will be returned.                 */
 Matrix Matrix::operator*(const Matrix & p_term)
 {
+	// Need to implement this
 	return *this;
 }
 
@@ -266,7 +310,6 @@ void Matrix::transpose()
 		m_array = temp;
 		delete[] dump;
 	}
-
 	int tem = m_rows;
 	m_rows = m_columns;
 	m_columns = tem;
@@ -308,7 +351,14 @@ bool Matrix::operator!=(const Matrix & p_term)
 	return false;
 }
 
-
+/* Purpose:
+Precondition:
+Postcondition:  */
+double determinant()
+{
+	// Need to implement this
+	return 0;
+}
 
 /*----------------------------------Display-----------------------------------*/
 
@@ -323,7 +373,7 @@ void Matrix::displayMatrix(ostream & out)
 	// Take time to format this so it looks better
 	for (int i = 0; i < m_size; i++)
 	{
-		if (i % m_columns != 0)
+		if (i % m_columns != 0 || i == 0)
 			out << m_array[i] << ' ';
 		else
 			out << '\n' << m_array[i] << ' ';

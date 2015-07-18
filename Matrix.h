@@ -4,7 +4,7 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/13/2015
+Date:		7/18/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
@@ -40,7 +40,7 @@ public:
 	void resetMatrix(const double p_array[], int p_r, int p_c);
 
 	// Operations
-	bool checkOperation(const Matrix & first, const Matrix & second, char oper);
+	bool checkOperation(const Matrix & other, char oper);
 	Matrix operator+(const Matrix & p_term);
 	Matrix operator-(const Matrix & p_term);
 	Matrix operator*(const Matrix & p_term);

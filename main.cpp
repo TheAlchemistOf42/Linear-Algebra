@@ -4,10 +4,11 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/13/2015
+Date:		7/17/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 // Todo: test operations
+//		add testing harness
 #include<iostream>
 #include"Matrix.h"
 using namespace std;
@@ -16,6 +17,7 @@ int main()
 {
 	double test[4] = { 0, 1, 2, 3 };
 	double test2[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	double test3[3] = { 0, 1, 2 };
 	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3);
 	cout << "Beginning of Matrix test: \n";
 	// Test, always display
@@ -68,13 +70,28 @@ int main()
 	m4.matrixScalar(2);
 	m4.displayMatrix(cout);
 	// setElement
-	cout << "Testing getElement() :\n";
+	cout << "Testing setElement() :\n";
+	cout << "Replacing row 1 column 1 with 0:\n";
+	cout << "Replacing row 3 column 2 with 1:\n";
+	cout << "Both for Matrix 4:\n";
+	m4.setElement(0, 1, 1);
+	m4.setElement(1, 3, 2);
+	m4.displayMatrix(cout);
 	// setRow
-	cout << "Testing getElement() :\n";
-	// setCol
-	cout << "Testing getElement() :\n";
+	cout << "Testing setRow() :\n";
+	cout << "Matrix 4: Replaing row 1 with 0, 1, 2\n";
+	m4.setRow(test3, 3, 1);
+	m4.displayMatrix(cout);
+	// setColumn
+	cout << "Testing setColumn() :\n";
+	cout << "Matrix 4: Replaing column 3 with 0, 1, 2\n";
+	m4.setRow(test3, 3, 3);
+	m4.displayMatrix(cout);
 	// resetMatrix
-	cout << "Testing getElement() :\n";
+	cout << "Testing resetMatrix() :\n";
+	cout << "Reseting Matrix 4:\n";
+	m4.resetMatrix(test2, 3, 3);
+	m4.displayMatrix(cout);
 	// checkOp
 		// +
 		// -
@@ -82,6 +99,7 @@ int main()
 		// augment
 		// inverse
 		// determinant
+	// Test operations
 	cout << "End of Matrix Testing.\n";
 	return 0;
 }
