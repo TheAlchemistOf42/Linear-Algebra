@@ -93,10 +93,26 @@ int main()
 	m4.resetMatrix(test2, 3, 3);
 	m4.displayMatrix(cout);
 	// checkOp
-		// +
-		// -
-		// *
+		// + addition
+	cout << "Matrix 1 + Matrix 2 should be true: ";
+	cout << (m1.checkOperation(m2, '+') ? "true" : "false") << '\n';
+	cout << "Matrix 1 + Matrix 4 should be false: ";
+	cout << (m1.checkOperation(m4, '+') ? "true" : "false") << '\n';
+		// - subtraction
+	cout << "Matrix 1 - Matrix 2 should be true: ";
+	cout << (m1.checkOperation(m2, '-') ? "true" : "false") << '\n';
+	cout << "Matrix 1 - Matrix 4 should be false: ";
+	cout << (m1.checkOperation(m4, '-') ? "true" : "false") << '\n';
+		// * multiplication
+	cout << "Matrix 1 * Matrix 2 should be true: ";
+	cout << (m1.checkOperation(m2, '*') ? "true" : "false") << '\n';
+	cout << "Matrix 1 * Matrix 4 should be false: ";
+	cout << (m1.checkOperation(m4, '*') ? "true" : "false") << '\n';
 		// augment
+	cout << "Matrix 1 augmented by Matrix 2 should be true: ";
+	cout << (m1.checkOperation(m2, 'a') ? "true" : "false") << '\n';
+	cout << "Matrix 1 augmented Matrix 4 should be false: ";
+	cout << (m1.checkOperation(m4, 'a') ? "true" : "false") << '\n';
 		// inverse
 		// determinant
 	// Test operations

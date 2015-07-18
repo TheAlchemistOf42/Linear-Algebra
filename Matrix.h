@@ -45,6 +45,7 @@ public:
 	Matrix operator-(const Matrix & p_term);
 	Matrix operator*(const Matrix & p_term);
 	Matrix & operator=(const Matrix & p_term);
+	Matrix inverse();
 	void augment(const Matrix & p_term);
 	void transpose();
 	bool operator==(const Matrix & p_term);

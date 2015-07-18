@@ -54,7 +54,7 @@ Matrix::Matrix(const Matrix & orig)
 }
 
 // Deconstructor
-Matrix::~Matrix() { delete [] m_array; }
+Matrix::~Matrix() { delete[] m_array; }
 
 /*---------------------------------Accessors----------------------------------*/
 
@@ -76,7 +76,7 @@ int Matrix::getSize() const { return m_size; }
 /* Purpose: Returns the a specific element from the matrix
 Precondition: Intialized matrix and valid row and column number
 Postcondition: A specific element will be returned,
-     otherwise 0 will be returned.                             */
+otherwise 0 will be returned.                             */
 double Matrix::getElement(int p_row, int p_column) const
 {
 	if (p_row <= m_rows && p_row >= 0 && p_column <= m_columns && p_column >= 0)
@@ -194,16 +194,34 @@ void Matrix::resetMatrix(const double p_array[], int p_r, int p_c)
 /* Purpose:
 Precondition:
 Postcondition:  */
-bool checkOperation(const Matrix & other, char oper)
+bool Matrix::checkOperation(const Matrix & other, char oper)
 {
 	// Need to implement this
+	if (oper == '+' || oper == '-')
+	// Addition or subtraction
+	{
+		return (m_columns == other.m_columns && m_rows == other.m_rows);
+	}
+	else if (oper == '*')
+	// Matrix multiplication (Ax=b) where A is host Matrix, x is other
+	{
+		return (m_columns == other.m_rows);
+	}
+	else if (oper == 'a')
+	// Augment Matrix
+	{
+		return (m_rows == other.m_rows);
+	}
+	// Equals (=), Equal to (==) and Not equal to (!=) do not have requirements.
+	// Transpose, inverse, and determinant do not need another Matrix.
+	// Default Assumption
 	return false;
 }
 
 /* Purpose: Adds together two matrices
 Precondition: Intialized matrices and both be the same size
 Postcondition: The sum of both matrices will be returned,
-     else the original matrix will be returned.            */
+else the original matrix will be returned.            */
 Matrix Matrix::operator+(const Matrix & p_term)
 {
 	if (m_rows == p_term.m_rows && m_columns == p_term.m_columns)
@@ -222,7 +240,7 @@ Matrix Matrix::operator+(const Matrix & p_term)
 /* Purpose: Subtracts the calling Matrix by the term Matrix
 Precondition: Intialized matrices and both be the same size
 Postcondition: The difference of both matrices will be returned,
-     else the original matrix will be returned.                 */
+else the original matrix will be returned.                 */
 Matrix Matrix::operator-(const Matrix & p_term)
 {
 	if (m_rows == p_term.m_rows && m_columns == p_term.m_columns)
@@ -251,7 +269,7 @@ Matrix Matrix::operator*(const Matrix & p_term)
 /* Purpose: Sets the calling matrix equal to the term Matrix
 Precondition: Intialized matrices
 Postcondition: The calling matrix will be the same as the term
-	matrix.														*/
+matrix.														*/
 Matrix & Matrix::operator=(const Matrix & p_term)
 {
 	m_rows = p_term.m_rows;
@@ -261,6 +279,15 @@ Matrix & Matrix::operator=(const Matrix & p_term)
 	// Check memory, I guess
 	for (int i = 0; i < p_term.m_size; i++)
 		m_array[i] = p_term.m_array[i];
+	return *this;
+}
+
+/* Purpose:
+Precondition:
+Postcondition:												*/
+Matrix Matrix::inverse()
+{
+	// need to implement this
 	return *this;
 }
 
@@ -278,12 +305,12 @@ void Matrix::augment(const Matrix & p_term)
 			int c = 0;
 			for (int m1 = 0; m1 < m_columns; m1++)
 			{
-				temp[c] = m_array[i*m_columns+m1];
+				temp[c] = m_array[i*m_columns + m1];
 				c++;
 			}
 			for (int m2 = 0; m2 < p_term.m_columns; m2++)
 			{
-				temp[c] = m_array[i*p_term.m_columns+m2];
+				temp[c] = m_array[i*p_term.m_columns + m2];
 				c++;
 			}
 		}
@@ -307,7 +334,7 @@ void Matrix::transpose()
 			// i designates col#-1 in original, row#-1 in transpose
 			for (int i = 0; i < m_columns; i++)
 			{
-				temp[i*m_columns+r] = m_array[r*m_columns+i];
+				temp[i*m_columns + r] = m_array[r*m_columns + i];
 			}
 		}
 		double * dump = m_array;
@@ -322,7 +349,7 @@ void Matrix::transpose()
 /* Purpose: Check if two matrices are the same
 Precondition: Intialized matrices
 Postcondition: Return true if they are the same, else
-	return false                                              */
+return false                                              */
 bool Matrix::operator==(const Matrix & p_term)
 {
 	if (m_rows != p_term.m_rows || m_columns != p_term.m_columns)
@@ -340,7 +367,7 @@ bool Matrix::operator==(const Matrix & p_term)
 /* Purpose: Check if two matrices are not the same
 Precondition: Intialized matrices
 Postcondition: Return true if they are not the same, else
-	return true                                              */
+return true                                              */
 bool Matrix::operator!=(const Matrix & p_term)
 {
 	if (m_rows != p_term.m_rows || m_columns != p_term.m_columns)
@@ -358,7 +385,7 @@ bool Matrix::operator!=(const Matrix & p_term)
 /* Purpose: Calculate the determinant of the matrix
 Precondition: It must be an n*n matrix
 Postcondition: It will return the determinant if it is n*n
-	otherwise return 0 */
+otherwise return 0 */
 double Matrix::determinant()
 {
 	// This function is recursive
@@ -372,23 +399,27 @@ double Matrix::determinant()
 		// 2x2 down - up, ad - cb
 		else if (m_rows == 2)
 		{
-			return m_array[0]*m_array[3] - m_array[2]*m_array[1];
+			return m_array[0] * m_array[3] - m_array[2] * m_array[1];
 		}
 		// 3x3 rule, aei + bfg + cdh - gec - hfa - idb
 		else if (m_rows == 3)
 		{
-			return ( m_array[0] * m_array[4] * m_array[8]
-				   + m_array[1] * m_array[5] * m_array[6]
-				   + m_array[2] * m_array[3] * m_array[7]
-				   - m_array[6] * m_array[4] * m_array[2]
-				   - m_array[7] * m_array[5] * m_array[0]
-				   - m_array[8] * m_array[3] * m_array[1] );
+			return (m_array[0] * m_array[4] * m_array[8]
+				  + m_array[1] * m_array[5] * m_array[6]
+				  + m_array[2] * m_array[3] * m_array[7]
+			      - m_array[6] * m_array[4] * m_array[2]
+				  - m_array[7] * m_array[5] * m_array[0]
+				  - m_array[8] * m_array[3] * m_array[1]);
 		}
 		// n*n, cofactor expansion
 		else
 		{
 			// This will definitely be inefficient, need to improve
 			double deter = 0;
+			Matrix * m = new Matrix[m_columns - 1];
+			// finish implementation of cofactor expansion
+			delete[] m;
+			return deter;
 		}
 	}
 	return 0;
@@ -399,8 +430,8 @@ double Matrix::determinant()
 /* Purpose: Display the matrix in the output stream
 Precondition: Intialized matrix and valid output stream
 Postcondition: The matrix will be outputted to the output stream,
-    so it is in rows and columns like a matrix is typically drawn.
-	If uninitialized, nothing is outputted.                        */
+so it is in rows and columns like a matrix is typically drawn.
+If uninitialized, nothing is outputted.                        */
 void Matrix::displayMatrix(ostream & out)
 {
 	if (m_array == 0 || m_size == 0) return;
