@@ -156,7 +156,7 @@ Postcondition:  */
 void Matrix::setElement(double p_term, int p_r, int p_c)
 {
 	if (p_r <= m_rows && p_r >= 1 && p_c <= m_columns && p_c >= 1)
-		m_array[(p_r - 1) * m_columns + p_c] = p_term;
+		m_array[(p_r - 1) * m_columns + p_c - 1] = p_term;
 }
 
 /* Purpose:
