@@ -24,7 +24,7 @@ Matrix::Matrix()
 	m_array = new double[0];    // Array containin the elements of the matrix
 	m_rows = 0;                 // Number of rows in matrix
 	m_columns = 0;              // Number of columns in matrix
-	m_size = 0;                 // Number of elements in matrix (m_columns*m_rows)
+	m_size = 0;                 // Number of elements in matrix (#col*#rows)
 }
 
 // Explicit Constructor
@@ -33,7 +33,7 @@ Matrix::Matrix(const double p_array[], int p_r, int p_c)
 {
 	m_rows = p_r;                 // Number of rows in matrix
 	m_columns = p_c;              // Number of columns in matrix
-	m_size = p_r * p_c;           // Number of elements in matrix (m_columns*m_rows)
+	m_size = p_r * p_c;           // Number of elements in matrix (#col*#rows)
 	m_array = new double[m_size];
 	for (int i = 0; i < m_size; i++)
 		m_array[i] = p_array[i];  // Array containin the elements of the matrix
@@ -92,7 +92,9 @@ Postcondition: The values of the first row will be swapped with the values
 of the second row as designated by the parameters */
 void Matrix::interchange(int p_r1, int p_r2)
 {
-	if (p_r1 <= m_rows && p_r1 > 0 && p_r2 <= m_rows && p_r2 > 0 && p_r1 != p_r2)
+	if (p_r1 <= m_rows && p_r1 > 0 &&
+		p_r2 <= m_rows && p_r2 > 0 &&
+		p_r1 != p_r2)
 	{
 		double temp;
 		int row2 = (p_r2 - 1)*m_columns;
@@ -121,12 +123,14 @@ void Matrix::rowScalar(int p_row, double p_multiplier)
 }
 
 /* Purpose: Add a row times a scalar to another row
-Precondition: Intialized matrix, p_rowDest and p_row are viable rows in the Matrix
+Precondition: Intialized matrix, p_rowDest and p_row are viable rows in Matrix
 Postcondition: The values of the first row will be added with the values
 of the second row times a multiplier and stored in the first row. */
 void Matrix::replacement(int p_rowDest, int p_row, double p_multiplier)
 {
-	if (p_rowDest <= m_rows && p_rowDest > 0 && p_row <= m_rows && p_row > 0 && p_rowDest != p_row)
+	if (p_rowDest <= m_rows && p_rowDest > 0 &&
+		p_row <= m_rows && p_row > 0 &&
+		p_rowDest != p_row)
 	{
 		int row2 = (p_row - 1)*m_columns;
 		for (int i = (p_rowDest - 1)*m_columns; i < (p_rowDest*m_columns); i++)
@@ -274,12 +278,12 @@ void Matrix::augment(const Matrix & p_term)
 			int c = 0;
 			for (int m1 = 0; m1 < m_columns; m1++)
 			{
-				temp[c] = m_array[i*m_columns + m1];
+				temp[c] = m_array[i*m_columns+m1];
 				c++;
 			}
 			for (int m2 = 0; m2 < p_term.m_columns; m2++)
 			{
-				temp[c] = m_array[i*p_term.m_columns + m2];
+				temp[c] = m_array[i*p_term.m_columns+m2];
 				c++;
 			}
 		}
@@ -303,7 +307,7 @@ void Matrix::transpose()
 			// i designates col#-1 in original, row#-1 in transpose
 			for (int i = 0; i < m_columns; i++)
 			{
-				temp[i*m_columns + r] = m_array[r*m_columns + i];
+				temp[i*m_columns+r] = m_array[r*m_columns+i];
 			}
 		}
 		double * dump = m_array;
@@ -351,12 +355,42 @@ bool Matrix::operator!=(const Matrix & p_term)
 	return false;
 }
 
-/* Purpose:
-Precondition:
-Postcondition:  */
-double determinant()
+/* Purpose: Calculate the determinant of the matrix
+Precondition: It must be an n*n matrix
+Postcondition: It will return the determinant if it is n*n
+	otherwise return 0 */
+double Matrix::determinant()
 {
-	// Need to implement this
+	// This function is recursive
+	if (m_rows == m_columns)
+	{
+		// 1x1 trivial case
+		if (m_rows == 1)
+		{
+			return m_array[0];
+		}
+		// 2x2 down - up, ad - cb
+		else if (m_rows == 2)
+		{
+			return m_array[0]*m_array[3] - m_array[2]*m_array[1];
+		}
+		// 3x3 rule, aei + bfg + cdh - gec - hfa - idb
+		else if (m_rows == 3)
+		{
+			return ( m_array[0] * m_array[4] * m_array[8]
+				   + m_array[1] * m_array[5] * m_array[6]
+				   + m_array[2] * m_array[3] * m_array[7]
+				   - m_array[6] * m_array[4] * m_array[2]
+				   - m_array[7] * m_array[5] * m_array[0]
+				   - m_array[8] * m_array[3] * m_array[1] );
+		}
+		// n*n, cofactor expansion
+		else
+		{
+			// This will definitely be inefficient, need to improve
+			double deter = 0;
+		}
+	}
 	return 0;
 }
 
