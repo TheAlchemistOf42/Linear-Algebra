@@ -49,6 +49,8 @@ public:
 	Matrix inverse();
 	void augment(const Matrix & p_term);
 	void transpose();
+	void ref();
+	void rref();
 	bool operator==(const Matrix & p_term);
 	bool operator!=(const Matrix & p_term);
 	double determinant();

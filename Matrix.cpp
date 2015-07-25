@@ -9,10 +9,11 @@ Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 /* To Do:
--Implement setCol, checkOperation, operation*
+-Implement checkOperation, ref, rref
 -test all added functions
 -see if I can optimize functions
 */
+
 #include"Matrix.h"
 using namespace std;
 
@@ -208,9 +209,10 @@ void Matrix::resetMatrix(const double p_array[], int p_r, int p_c)
 
 /*---------------------------------Operations---------------------------------*/
 
-/* Purpose:
-Precondition:
-Postcondition:  */
+/* Purpose: Verify if an operation will work for the matrices
+Precondition: Two valid matrices and a valid char option
+Postcondition:  Will return true if the operation will work,
+	else return false, default is false.						*/
 bool Matrix::checkOperation(const Matrix & other, char oper)
 {
 	// Need to implement this
@@ -238,7 +240,7 @@ bool Matrix::checkOperation(const Matrix & other, char oper)
 /* Purpose: Adds together two matrices
 Precondition: Intialized matrices and both be the same size
 Postcondition: The sum of both matrices will be returned,
-else the original matrix will be returned.            */
+	else the original matrix will be returned.            */
 Matrix Matrix::operator+(const Matrix & p_term)
 {
 	if (m_rows == p_term.m_rows && m_columns == p_term.m_columns)
@@ -258,7 +260,7 @@ Matrix Matrix::operator+(const Matrix & p_term)
 /* Purpose: Subtracts the calling Matrix by the term Matrix
 Precondition: Intialized matrices and both be the same size
 Postcondition: The difference of both matrices will be returned,
-else the original matrix will be returned.                 */
+	else the original matrix will be returned.                 */
 Matrix Matrix::operator-(const Matrix & p_term)
 {
 	if (m_rows == p_term.m_rows && m_columns == p_term.m_columns)
@@ -278,17 +280,40 @@ Matrix Matrix::operator-(const Matrix & p_term)
 /* Purpose: Multiply one matrix by another
 Precondition: Intialized matrices and both be the same size
 Postcondition: The difference of both matrices will be returned,
-else the original matrix will be returned.                 */
+	else the original matrix will be returned.                 */
 Matrix Matrix::operator*(const Matrix & p_term)
 {
-	// Need to implement this
+	// May be able to make it one for loop
+	if (m_columns == p_term.m_rows)
+	{
+		int productSize = m_rows * p_term.m_columns;
+		double * productArray = new double[productSize];
+		int row = 0,
+			column = 0;
+		for (int i = 0; i < m_rows * p_term.m_columns; i++)
+		{
+			double sum = 0;
+			row = i / m_columns;
+			column = i % m_columns;
+			for (int k = 0; k < m_columns; k++)
+			{
+				sum += m_array[k + row * m_columns]
+					 * p_term.m_array[k * p_term.m_columns + column];
+			}
+			productArray[i] = sum;
+		}
+		Matrix product(productArray, m_rows, p_term.m_columns);
+		delete[] productArray;
+		return product;
+	}
+
 	return *this;
 }
 
 /* Purpose: Sets the calling matrix equal to the term Matrix
 Precondition: Intialized matrices
 Postcondition: The calling matrix will be the same as the term
-matrix.														*/
+	matrix.													*/
 Matrix & Matrix::operator=(const Matrix & p_term)
 {
 	delete[] m_array;
@@ -304,7 +329,8 @@ Matrix & Matrix::operator=(const Matrix & p_term)
 
 /* Purpose: Return the inverse of the matrix
 Precondition: The matrix must be invertible
-Postcondition:												*/
+Postcondition: The inverse of the matrix will be returned,
+	else the matrix itself will be returned.				*/
 Matrix Matrix::inverse()
 {
 	if (m_rows == m_columns)
@@ -371,12 +397,12 @@ void Matrix::augment(const Matrix & p_term)
 	}
 }
 
-/* Fix this one ---------------------------------------------*/
 /* Purpose: Transpose the matrix
 Precondition: Intialized matrix
 Postcondition: The rows of the matrix will become its columns   */
 void Matrix::transpose()
 {
+	// see about reducing it to one for loop
 	if (m_rows != 1 && m_columns != 1)
 	{
 		double * temp = new double[m_size];
@@ -387,7 +413,7 @@ void Matrix::transpose()
 			// i designates col#-1 in original, row#-1 in transpose
 			for (int i = 0; i < m_columns; i++)
 			{
-				temp[i*m_columns + r] = m_array[r*m_columns + i];
+				temp[i*m_rows + r] = m_array[r*m_columns + i];
 			}
 		}
 		delete[] m_array;
@@ -398,10 +424,20 @@ void Matrix::transpose()
 	m_columns = tem;
 }
 
+void Matrix::ref()
+{
+
+}
+
+void Matrix::rref()
+{
+
+}
+
 /* Purpose: Check if two matrices are the same
 Precondition: Intialized matrices
 Postcondition: Return true if they are the same, else
-return false                                              */
+	return false                                      */
 bool Matrix::operator==(const Matrix & p_term)
 {
 	if (m_rows != p_term.m_rows || m_columns != p_term.m_columns)
@@ -419,7 +455,7 @@ bool Matrix::operator==(const Matrix & p_term)
 /* Purpose: Check if two matrices are not the same
 Precondition: Intialized matrices
 Postcondition: Return true if they are not the same, else
-return true                                              */
+	return true                                           */
 bool Matrix::operator!=(const Matrix & p_term)
 {
 	if (m_rows != p_term.m_rows || m_columns != p_term.m_columns)
@@ -437,7 +473,7 @@ bool Matrix::operator!=(const Matrix & p_term)
 /* Purpose: Calculate the determinant of the matrix
 Precondition: It must be an n*n matrix
 Postcondition: It will return the determinant if it is n*n
-otherwise return 0 */
+	otherwise return 0 */
 double Matrix::determinant()
 {
 	// This function is recursive
@@ -500,8 +536,8 @@ double Matrix::determinant()
 /* Purpose: Display the matrix in the output stream
 Precondition: Intialized matrix and valid output stream
 Postcondition: The matrix will be outputted to the output stream,
-so it is in rows and columns like a matrix is typically drawn.
-If uninitialized, nothing is outputted.                        */
+	so it is in rows and columns like a matrix is typically drawn.
+	If uninitialized, nothing is outputted.                        */
 void Matrix::displayMatrix(ostream & out)
 {
 	out.precision(2);
