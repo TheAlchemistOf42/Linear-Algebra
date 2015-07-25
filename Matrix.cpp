@@ -4,7 +4,7 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/18/2015
+Date:		7/25/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
@@ -504,14 +504,16 @@ so it is in rows and columns like a matrix is typically drawn.
 If uninitialized, nothing is outputted.                        */
 void Matrix::displayMatrix(ostream & out)
 {
+	out.precision(2);
+	out << left;
 	if (m_array == 0 || m_size == 0) return;
 	// Take time to format this so it looks better
 	for (int i = 0; i < m_size; i++)
 	{
 		if (i % m_columns != 0 || i == 0)
-			out << m_array[i] << ' ';
+			out << setw(3) << m_array[i] << ' ';
 		else
-			out << '\n' << m_array[i] << ' ';
+			out << '\n' << setw(3) << m_array[i] << ' ';
 	}
 	out << '\n';
 }

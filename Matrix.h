@@ -4,11 +4,12 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/18/2015
+Date:		7/25/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 #include<iostream>
+#include<iomanip>
 using namespace std;
 
 class Matrix
