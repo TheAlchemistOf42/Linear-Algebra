@@ -9,7 +9,7 @@ Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 /* To Do:
--Implement setRow, setCol, checkOperation, operation*, determinant
+-Implement setCol, checkOperation, operation*
 -test all added functions
 -see if I can optimize functions
 */
@@ -76,7 +76,7 @@ int Matrix::getSize() const { return m_size; }
 /* Purpose: Returns the a specific element from the matrix
 Precondition: Intialized matrix and valid row and column number
 Postcondition: A specific element will be returned,
-otherwise 0 will be returned.                             */
+	otherwise 0 will be returned.                        */
 double Matrix::getElement(int p_row, int p_column) const
 {
 	if (p_row <= m_rows && p_row >= 0 && p_column <= m_columns && p_column >= 0)
@@ -89,7 +89,7 @@ double Matrix::getElement(int p_row, int p_column) const
 /* Purpose: Swap two row 1 and row 2
 Precondition: Intialized matrix, p_r1 and p_r2 are viable rows in the Matrix
 Postcondition: The values of the first row will be swapped with the values
-of the second row as designated by the parameters */
+	of the second row as designated by the parameters		*/
 void Matrix::interchange(int p_r1, int p_r2)
 {
 	if (p_r1 <= m_rows && p_r1 > 0 &&
@@ -125,7 +125,7 @@ void Matrix::rowScalar(int p_row, double p_multiplier)
 /* Purpose: Add a row times a scalar to another row
 Precondition: Intialized matrix, p_rowDest and p_row are viable rows in Matrix
 Postcondition: The values of the first row will be added with the values
-of the second row times a multiplier and stored in the first row. */
+	of the second row times a multiplier and stored in the first row.	*/
 void Matrix::replacement(int p_rowDest, int p_row, double p_multiplier)
 {
 	if (p_rowDest <= m_rows && p_rowDest > 0 &&
@@ -150,40 +150,57 @@ void Matrix::matrixScalar(double p_multiplier)
 		m_array[i] *= p_multiplier;
 }
 
-/* Purpose:
-Precondition:
-Postcondition:  */
+/* Purpose: Replace one element in the matrix with p_term
+Precondition: p_r and p_c must be in the Matrix
+Postcondition:  Element at p_c and p_r will equal p_term;
+	else no change											*/
 void Matrix::setElement(double p_term, int p_r, int p_c)
 {
 	if (p_r <= m_rows && p_r >= 1 && p_c <= m_columns && p_c >= 1)
 		m_array[(p_r - 1) * m_columns + p_c - 1] = p_term;
 }
 
-/* Purpose:
-Precondition:
-Postcondition:  */
+/* Purpose: Replace one row in the matrix with p_array
+Precondition: p_array size should match p_size, p_size must equal the
+	number of elements in a row, p_rowNum should be in the matrix
+Postcondition: p_array will replace row p_rowNum,
+	else no change											*/
 void Matrix::setRow(const double p_array[], int p_size, int p_rowNum)
 {
-	// Need to implement this
+	if (p_size == m_columns && p_rowNum >= 1 && p_rowNum <= m_rows)
+	{
+		for (int i = m_columns * (p_rowNum - 1); i < p_rowNum*m_columns; i++)
+		{
+			m_array[i] = p_array[i % m_columns];
+		}
+	}
 }
 
-/* Purpose:
-Precondition:
-Postcondition:  */
+/* Purpose: Replace one column in the matrix with p_array
+Precondition: p_array size should match p_size, p_size must equal the
+	number of elements in a row, p_colNum should be in the matrix
+Postcondition:  p_array will replace column p_colNum,
+	else no change											*/
 void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
 {
-	// Need to implement this
+	if (p_size == m_rows && p_colNum >= 1 && p_colNum <= m_columns)
+	{
+		for (int i = p_colNum - 1; i < m_columns*(m_rows - 1) + p_colNum; i += m_columns)
+		{
+			m_array[i] = p_array[i / m_columns];
+		}
+	}
 }
 
-/* Purpose:
-Precondition:
-Postcondition:  */
+/* Purpose: Reset a matrix with new size and elements
+Precondition: p_r * p_c should be the number of elements in p_array
+Postcondition:  m_array will contain the elements of p_array,*/
 void Matrix::resetMatrix(const double p_array[], int p_r, int p_c)
 {
+	delete[] m_array;
 	m_rows = p_r;
 	m_columns = p_c;
 	m_size = p_r * p_c;
-	delete[] m_array;
 	m_array = new double[m_size];
 	for (int i = 0; i < m_size; i++)
 		m_array[i] = p_array[i];  // Array containin the elements of the matrix
@@ -231,6 +248,7 @@ Matrix Matrix::operator+(const Matrix & p_term)
 		for (int i = 0; i < m_size; i++)
 			temp[i] = m_array[i] + p_term.m_array[i];
 		Matrix sum(temp, m_rows, m_columns);
+		delete[] temp;
 		return sum;
 	}
 	else
@@ -250,6 +268,7 @@ Matrix Matrix::operator-(const Matrix & p_term)
 		for (int i = 0; i < m_size; i++)
 			temp[i] = m_array[i] - p_term.m_array[i];
 		Matrix difference(temp, m_rows, m_columns);
+		delete[] temp;
 		return difference;
 	}
 	else
@@ -272,6 +291,7 @@ Postcondition: The calling matrix will be the same as the term
 matrix.														*/
 Matrix & Matrix::operator=(const Matrix & p_term)
 {
+	delete[] m_array;
 	m_rows = p_term.m_rows;
 	m_columns = p_term.m_columns;
 	m_size = p_term.m_size;
@@ -282,12 +302,42 @@ Matrix & Matrix::operator=(const Matrix & p_term)
 	return *this;
 }
 
-/* Purpose:
-Precondition:
+/* Purpose: Return the inverse of the matrix
+Precondition: The matrix must be invertible
 Postcondition:												*/
 Matrix Matrix::inverse()
 {
-	// need to implement this
+	if (m_rows == m_columns)
+	{
+		double * inverse = new double[m_size];
+		double deter = determinant();
+		if (deter != 0)
+		{
+
+			if (m_rows == 1)
+				// Single element
+			{
+				inverse[0] = 1 / m_array[0];
+			}
+			else if (m_rows == 2)
+				// 2x2 matrix
+			{
+				inverse[0] = m_array[3] / deter;
+				inverse[1] = -1 * m_array[1] / deter;
+				inverse[2] = -1 * m_array[2] / deter;
+				inverse[3] = m_array[0] / deter;
+			}
+			else
+			{
+				// Use row reduce reduction
+
+			}
+			Matrix invert(inverse, m_rows, m_columns);
+			delete[] inverse;
+			return invert;
+		}
+	}
+	// Else return current Matrix
 	return *this;
 }
 
@@ -300,9 +350,9 @@ void Matrix::augment(const Matrix & p_term)
 	if (m_rows == p_term.m_rows)
 	{
 		double * temp = new double[m_size + p_term.m_size];
+		int c = 0;
 		for (int i = 0; i < m_rows; i++)
 		{
-			int c = 0;
 			for (int m1 = 0; m1 < m_columns; m1++)
 			{
 				temp[c] = m_array[i*m_columns + m1];
@@ -310,15 +360,18 @@ void Matrix::augment(const Matrix & p_term)
 			}
 			for (int m2 = 0; m2 < p_term.m_columns; m2++)
 			{
-				temp[c] = m_array[i*p_term.m_columns + m2];
+				temp[c] = p_term.m_array[i*p_term.m_columns + m2];
 				c++;
 			}
 		}
 		m_columns += p_term.m_columns;
 		m_size = m_columns * m_rows;
+		delete[] m_array;
+		m_array = temp;
 	}
 }
 
+/* Fix this one ---------------------------------------------*/
 /* Purpose: Transpose the matrix
 Precondition: Intialized matrix
 Postcondition: The rows of the matrix will become its columns   */
@@ -337,9 +390,8 @@ void Matrix::transpose()
 				temp[i*m_columns + r] = m_array[r*m_columns + i];
 			}
 		}
-		double * dump = m_array;
+		delete[] m_array;
 		m_array = temp;
-		delete[] dump;
 	}
 	int tem = m_rows;
 	m_rows = m_columns;
@@ -416,9 +468,27 @@ double Matrix::determinant()
 		{
 			// This will definitely be inefficient, need to improve
 			double deter = 0;
-			Matrix * m = new Matrix[m_columns - 1];
+			Matrix m;
+			double * tempArray = new double[(m_columns - 1) * (m_rows - 1)];
 			// finish implementation of cofactor expansion
-			delete[] m;
+			for (int i = 0; i < m_columns; i++)
+			{
+				if (m_array[i] != 0)
+				{
+					int newM = 0;
+					for (int orig = m_columns; orig < m_size; orig++)
+					{
+						if (orig % m_columns != i % m_columns)
+						{
+							tempArray[newM] = m_array[orig];
+							newM++;
+						}
+					}
+					m.resetMatrix(tempArray, m_columns - 1, m_rows - 1);
+					deter += m_array[i] * m.determinant();
+				}
+			}
+			delete[] tempArray;
 			return deter;
 		}
 	}

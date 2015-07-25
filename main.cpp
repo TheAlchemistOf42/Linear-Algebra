@@ -13,64 +13,71 @@ Description: A matrix object allowing one to do mathematics with matrices.
 #include"Matrix.h"
 using namespace std;
 
+Matrix createIdentity(int I);
+
 int main()
 {
 	double test[4] = { 0, 1, 2, 3 };
 	double test2[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	double test3[3] = { 0, 1, 2 };
-	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3);
+	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3), m5;
 	cout << "Beginning of Matrix test: \n";
 	// Test, always display
-	cout << "Always test display function of Matrix object.\n";
+	cout << "This will almost always test display function of Matrix object.\n";
 	// Default Constructor
-	cout << "Testing Default Constructor:\n";
-	cout << "\tMatrix 1:\n";
+	cout << "\nTesting Default Constructor:\n";
+	cout << "Matrix 1:\n";
 	m1.displayMatrix(cout);
 	// Explicit Constructor
-	cout << "Testing Explicit Constructor:\n";
-	cout << "\tMatrix 2:\n";
+	cout << "\nTesting Explicit Constructor:\n";
+	cout << "Matrix 2:\n";
 	m2.displayMatrix(cout);
 	// Copy Constructor
-	cout << "Testing Copy Constructor:\n";
-	cout << "\tMatrix 3:\n";
+	cout << "\nTesting Copy Constructor:\n";
+	cout << "Matrix 3:\n";
 	m3.displayMatrix(cout);
 	// 4th matrix
-	cout << "I need a 4th matrix.\n\tMatrix 4:\n";
+	cout << "\nI need a 4th matrix.\nMatrix 4:\n";
+	m4.displayMatrix(cout);
+	cout << "\nTesting createIdentity() from main.cpp\n";
+	cout << "Matrix 5, I^4\n";
+	m5 = createIdentity(4);
+	m5.displayMatrix(cout);
 	// getNumOfRows
-	cout << "Testing getNumOfRows() :\n";
-	cout << "\tMatrix 2 # of rows: " << m2.getNumOfRows() << '\n';
+	cout << "\nTesting getNumOfRows() :\n";
+	cout << "Matrix 2 # of rows: " << m2.getNumOfRows() << '\n';
 	// getNumOfCols
-	cout << "Testing getNumOfCols() :\n";
-	cout << "\tMatrix 3 # of Columns: " << m2.getNumOfCols() << '\n';
+	cout << "\nTesting getNumOfCols() :\n";
+	cout << "Matrix 3 # of Columns: " << m2.getNumOfCols() << '\n';
 	// getSize
-	cout << "Testing getSize() :\n";
-	cout << "\tMatrix 2 # of Elements: " << m2.getSize() << '\n';
+	cout << "\nTesting getSize() :\n";
+	cout << "Matrix 2 # of Elements: " << m2.getSize() << '\n';
 	// getElement
-	cout << "Testing getElement() :\n";
-	cout << "\tMatrix 2 Row 2 Column 1: " << m2.getElement(2,1) << '\n';
-	cout << "\tMatrix 2 Row 1 Column 2: " << m2.getElement(1, 2) << '\n';
+	cout << "\nTesting getElement() :\n";
+	cout << "Matrix 2 Row 2 Column 1: " << m2.getElement(2,1) << '\n';
+	cout << "Matrix 2 Row 1 Column 2: " << m2.getElement(1, 2) << '\n';
 	// interchange
-	cout << "Testing interchange() :\n";
+	cout << "\nTesting interchange() :\n";
 	cout << "Matrix 2: Switching row 1 and 2:\n";
 	m2.interchange(1, 2);
 	m2.displayMatrix(cout);
 	// rowScalar
-	cout << "Testing rowScalar() :\n";
+	cout << "\nTesting rowScalar() :\n";
 	cout << "Matrix 4: Multiplying row 2 by 3:\n";
 	m4.rowScalar(2, 3);
 	m4.displayMatrix(cout);
 	// replacement
-	cout << "Testing replacement() :\n";
+	cout << "\nTesting replacement() :\n";
 	cout << "Matrix 4: Adding row 1 times -2 to row three:\n";
 	m4.replacement(3, 1, -2);
 	m4.displayMatrix(cout);
 	// matrixScalar
-	cout << "Testing matrixScalar() :\n";
+	cout << "\nTesting matrixScalar() :\n";
 	cout << "Multiplying Matrix by 2:\n";
 	m4.matrixScalar(2);
 	m4.displayMatrix(cout);
 	// setElement
-	cout << "Testing setElement() :\n";
+	cout << "\nTesting setElement() :\n";
 	cout << "Replacing row 1 column 1 with 0:\n";
 	cout << "Replacing row 3 column 2 with 1:\n";
 	cout << "Both for Matrix 4:\n";
@@ -78,21 +85,22 @@ int main()
 	m4.setElement(1, 3, 2);
 	m4.displayMatrix(cout);
 	// setRow
-	cout << "Testing setRow() :\n";
+	cout << "\nTesting setRow() :\n";
 	cout << "Matrix 4: Replaing row 1 with 0, 1, 2\n";
 	m4.setRow(test3, 3, 1);
 	m4.displayMatrix(cout);
 	// setColumn
-	cout << "Testing setColumn() :\n";
+	cout << "\nTesting setColumn() :\n";
 	cout << "Matrix 4: Replaing column 3 with 0, 1, 2\n";
 	m4.setRow(test3, 3, 3);
 	m4.displayMatrix(cout);
 	// resetMatrix
-	cout << "Testing resetMatrix() :\n";
+	cout << "\nTesting resetMatrix() :\n";
 	cout << "Reseting Matrix 4:\n";
 	m4.resetMatrix(test2, 3, 3);
 	m4.displayMatrix(cout);
 	// checkOp
+	cout << "\nTesting checkOperation() :\n";
 		// + addition
 	cout << "Matrix 2 + Matrix 3 should be true: ";
 	cout << (m2.checkOperation(m3, '+') ? "true" : "false") << '\n';
@@ -111,12 +119,85 @@ int main()
 		// augment
 	cout << "Matrix 2 augmented by Matrix 3 should be true: ";
 	cout << (m2.checkOperation(m3, 'a') ? "true" : "false") << '\n';
-	cout << "Matrix 2 augmented Matrix 4 should be false: ";
+	cout << "Matrix 2 augmented by Matrix 4 should be false: ";
 	cout << (m2.checkOperation(m4, 'a') ? "true" : "false") << '\n';
+
 		// inverse
 		// determinant
 	// Test operations
+	// +
+	// -
+	// *
+	// =
+	// augment
+	cout << "\nTesting augment():\n";
+	cout << "Matrix 2:\n";
+	m2.displayMatrix(cout);
+	cout << "Matrix 3:\n";
+	m3.displayMatrix(cout);
+	cout << "\nMatrix 2 augmented by Matrix 3:\n";
+	m2.augment(m3);
+	m2.displayMatrix(cout);
+	// trasnpose
+	cout << "\nTesting transpose():\n";
+	cout << "Matrix 2:\n";
+	m2.displayMatrix(cout);
+	cout << "Matrix 2 transposed:\n";
+	// Fix transpose
+	// m2.transpose();
+	m2.displayMatrix(cout);
+	// ==
+	cout << "\nTesting == operator:\n";
+	cout << "Matrix 2 == Matrix 2\n\t" << (m2 == m2 ? "True" : "False") << '\n';
+	cout << "Matrix 2 == Matrix 4\n\t" << (m2 == m4 ? "True" : "False") << '\n';
+	// !=
+	cout << "\nTesting != operator:\n";
+	cout << "Matrix 2 != Matrix 2\n\t" << (m2 != m2 ? "True" : "False") << '\n';
+	cout << "Matrix 2 != Matrix 4\n\t" << (m2 != m4 ? "True" : "False") << '\n';
+	// determinant
+	cout << "\nTesting determinant() :\n";
+	cout << "Matrix 3:\n";
+	m3.displayMatrix(cout);
+	cout << "Matrix 3 determinant: " << m3.determinant() << '\n';
+	cout << "Matrix 4:\n";
+	m4.displayMatrix(cout);
+	cout << "Matrix 4 determinant: " << m4.determinant() << '\n';
+	cout << "Matrix 5:\n";
+	m5.displayMatrix(cout);
+	cout << "Matrix 5 determinant: " << m5.determinant() << '\n';
+
+
 	cout << "\nEnd of Matrix Testing.\n";
 	return 0;
+}
+
+/* Purpose: Create an identity matrix of I^R
+Precondition: R is greater then or equal to 1
+Postcondition: The matrix return will be an Identity matrix,
+R does not meet Precondition, then an empty matrix will be returned*/
+Matrix createIdentity(int R)
+{
+	if (R >= 1)
+	{
+		int insert1 = 0;
+		double * array = new double[R*R];
+		for (int k = 0; k < R*R; k++)
+		{
+			if (k == insert1)
+			{
+				array[k] = 1.0;
+				insert1 += R + 1;
+			}
+			else
+			{
+				array[k] = 0.0;
+			}
+		}
+		Matrix identity(array, R, R);
+		delete[] array;
+		return identity;
+	}
+
+	return Matrix();
 }
 // End of File
