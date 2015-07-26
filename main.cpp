@@ -20,7 +20,9 @@ int main()
 	double test[4] = { 0, 1, 2, 3 };
 	double test2[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	double test3[3] = { 0, 1, 2 };
-	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3), m5;
+	double test4[25] = { 4, 6, -7, 3, -5, 3, 1, 2, 8, 9, 7, 3, -6, 4, -8, 5,
+						 2, 5, 2, -3, 2, 4, 9, -1, 2 };
+	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3), m5, m6(test4, 5, 5);
 	cout << "Beginning of Matrix test: \n";
 	// Test, always display ---------------------
 	cout << "This will almost always test display function of Matrix object.\n";
@@ -142,9 +144,6 @@ int main()
 	cout << "Matrix 2 augmented by Matrix 4 should be false: ";
 	cout << (m2.checkOperation(m4, 'a') ? "true" : "false") << '\n';
 
-		// inverse ---------------------
-		// determinant ---------------------
-
 	// Test operations ---------------------
 	cout << "\nTesting operators:\n";
 	// +
@@ -214,8 +213,6 @@ int main()
 	m3.transpose();
 	m3.displayMatrix(cout);
 
-	// ref --------------------
-
 	// rref --------------------
 
 	// == ---------------------
@@ -239,6 +236,9 @@ int main()
 	cout << "Matrix 5:\n";
 	m5.displayMatrix(cout);
 	cout << "Matrix 5 determinant: " << m5.determinant() << '\n';
+	cout << "Matrix 6:\n";
+	m6.displayMatrix(cout);
+	cout << "Matrix 6 determinant: " << m6.determinant() << '\n';
 
 
 	cout << "\nEnd of Matrix Testing.\n";

@@ -186,7 +186,8 @@ void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
 {
 	if (p_size == m_rows && p_colNum >= 1 && p_colNum <= m_columns)
 	{
-		for (int i = p_colNum - 1; i < m_columns*(m_rows - 1) + p_colNum; i += m_columns)
+		for (int i = p_colNum - 1; i < m_columns*(m_rows - 1) + p_colNum;
+		 		i += m_columns)
 		{
 			m_array[i] = p_array[i / m_columns];
 		}
@@ -424,11 +425,6 @@ void Matrix::transpose()
 	m_columns = tem;
 }
 
-void Matrix::ref()
-{
-
-}
-
 void Matrix::rref()
 {
 
@@ -521,9 +517,11 @@ double Matrix::determinant()
 						}
 					}
 					m.resetMatrix(tempArray, m_columns - 1, m_rows - 1);
-					deter += m_array[i] * m.determinant();
+					deter += m_array[i] * m.determinant()
+							* pow(-1,i / m_columns + i % m_columns);
 				}
 			}
+			double temp = (1 ^ 4);
 			delete[] tempArray;
 			return deter;
 		}
@@ -540,7 +538,6 @@ Postcondition: The matrix will be outputted to the output stream,
 	If uninitialized, nothing is outputted.                        */
 void Matrix::displayMatrix(ostream & out)
 {
-	out.precision(2);
 	out << left;
 	if (m_array == 0 || m_size == 0) return;
 	// Take time to format this so it looks better
