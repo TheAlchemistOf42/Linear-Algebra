@@ -80,8 +80,8 @@ Postcondition: A specific element will be returned,
 	otherwise 0 will be returned.                        */
 double Matrix::getElement(int p_row, int p_column) const
 {
-	if (p_row <= m_rows && p_row >= 0 && p_column <= m_columns && p_column >= 0)
-		return m_array[(p_row - 1) * m_columns + p_column];
+	if (p_row <= m_rows && p_row >= 1 && p_column <= m_columns && p_column >= 1)
+		return m_array[(p_row - 1) * m_columns + p_column - 1];
 	return 0;
 }
 
@@ -93,8 +93,8 @@ Postcondition: The values of the first row will be swapped with the values
 	of the second row as designated by the parameters		*/
 void Matrix::interchange(int p_r1, int p_r2)
 {
-	if (p_r1 <= m_rows && p_r1 > 0 &&
-		p_r2 <= m_rows && p_r2 > 0 &&
+	if (p_r1 <= m_rows && p_r1 >= 1 &&
+		p_r2 <= m_rows && p_r2 >= 1 &&
 		p_r1 != p_r2)
 	{
 		double temp;
@@ -114,7 +114,7 @@ Precondition: Intialized matrix, p_row is a viable row in the Matrix
 Postcondition: The values of the row will be multiplied by a scalar */
 void Matrix::rowScalar(int p_row, double p_multiplier)
 {
-	if (p_row <= m_rows && p_row > 0)
+	if (p_row <= m_rows && p_row >= 1)
 	{
 		for (int i = (p_row - 1)*m_columns; i < (p_row*m_columns); i++)
 		{
@@ -129,8 +129,8 @@ Postcondition: The values of the first row will be added with the values
 	of the second row times a multiplier and stored in the first row.	*/
 void Matrix::replacement(int p_rowDest, int p_row, double p_multiplier)
 {
-	if (p_rowDest <= m_rows && p_rowDest > 0 &&
-		p_row <= m_rows && p_row > 0 &&
+	if (p_rowDest <= m_rows && p_rowDest >= 1 &&
+		p_row <= m_rows && p_row >= 1 &&
 		p_rowDest != p_row)
 	{
 		int row2 = (p_row - 1)*m_columns;
