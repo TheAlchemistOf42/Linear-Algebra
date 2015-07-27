@@ -21,7 +21,7 @@ int main()
 	double test2[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	double test3[3] = { 0, 1, 2 };
 	double test4[25] = { 4, 6, -7, 3, -5, 3, 1, 2, 8, 9, 7, 3, -6, 4, -8, 5,
-						 2, 5, 2, -3, 2, 4, 9, -1, 2 };
+						2, 5, 2, -3, 2, 4, 9, -1, 2 };
 	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3), m5, m6(test4, 5, 5);
 	cout << "Beginning of Matrix test: \n";
 	// Test, always display ---------------------
@@ -67,7 +67,7 @@ int main()
 
 	// getElement ---------------------
 	cout << "\nTesting getElement() :\n";
-	cout << "Matrix 2 Row 2 Column 1: " << m2.getElement(2,1) << '\n';
+	cout << "Matrix 2 Row 2 Column 1: " << m2.getElement(2, 1) << '\n';
 	cout << "Matrix 2 Row 1 Column 2: " << m2.getElement(1, 2) << '\n';
 
 	// interchange ---------------------
@@ -123,22 +123,22 @@ int main()
 
 	// checkOp---------------------
 	cout << "\nTesting checkOperation() :\n";
-		// + addition ---------------------
+	// + addition ---------------------
 	cout << "Matrix 2 + Matrix 3 should be true: ";
 	cout << (m2.checkOperation(m3, '+') ? "true" : "false") << '\n';
 	cout << "Matrix 2 + Matrix 4 should be false: ";
 	cout << (m2.checkOperation(m4, '+') ? "true" : "false") << '\n';
-		// - subtraction ---------------------
+	// - subtraction ---------------------
 	cout << "Matrix 2 - Matrix 3 should be true: ";
 	cout << (m2.checkOperation(m3, '-') ? "true" : "false") << '\n';
 	cout << "Matrix 2 - Matrix 4 should be false: ";
 	cout << (m2.checkOperation(m4, '-') ? "true" : "false") << '\n';
-		// * multiplication ---------------------
+	// * multiplication ---------------------
 	cout << "Matrix 2 * Matrix 3 should be true: ";
 	cout << (m2.checkOperation(m3, '*') ? "true" : "false") << '\n';
 	cout << "Matrix 2 * Matrix 4 should be false: ";
 	cout << (m2.checkOperation(m4, '*') ? "true" : "false") << '\n';
-		// augment ---------------------
+	// augment ---------------------
 	cout << "Matrix 2 augmented by Matrix 3 should be true: ";
 	cout << (m2.checkOperation(m3, 'a') ? "true" : "false") << '\n';
 	cout << "Matrix 2 augmented by Matrix 4 should be false: ";
@@ -214,6 +214,23 @@ int main()
 	m3.displayMatrix(cout);
 
 	// rref --------------------
+	cout << "\nTesting rref():\n";
+	cout << "Matrix 4:\n";
+	m4.displayMatrix(cout);
+	m4.rref();
+	cout << "Matrix 4 rref():\n";
+	m4.displayMatrix(cout);
+	cout << "Reseting Matrix 4:\n";
+	m4.resetMatrix(test2, 3, 3);
+	m4.displayMatrix(cout);
+	cout << "Matrix 6:\n";
+	m6.displayMatrix(cout);
+	m6.rref();
+	cout << "Matrix 6 rref():\n";
+	m6.displayMatrix(cout);
+	cout << "Reseting Matrix 6:\n";
+	m6.resetMatrix(test4, 5, 5);
+	m6.displayMatrix(cout);
 
 	// == ---------------------
 	cout << "\nTesting == operator:\n";

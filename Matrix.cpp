@@ -9,7 +9,7 @@ Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 /* To Do:
--Implement checkOperation, ref, rref
+-Implement checkOperation
 -test all added functions
 -see if I can optimize functions
 */
@@ -134,9 +134,10 @@ void Matrix::replacement(int p_rowDest, int p_row, double p_multiplier)
 		p_rowDest != p_row)
 	{
 		int row2 = (p_row - 1)*m_columns;
-		for (int i = (p_rowDest - 1)*m_columns; i < (p_rowDest*m_columns); i++)
+		for (int i = (p_rowDest - 1) * m_columns; i < (p_rowDest * m_columns);
+			  i++)
 		{
-			m_array[i] += p_multiplier*m_array[row2];
+			m_array[i] += p_multiplier * m_array[row2];
 			row2++;
 		}
 	}
@@ -163,7 +164,7 @@ void Matrix::setElement(double p_term, int p_r, int p_c)
 
 /* Purpose: Replace one row in the matrix with p_array
 Precondition: p_array size should match p_size, p_size must equal the
-	number of elements in a row, p_rowNum should be in the matrix
+number of elements in a row, p_rowNum should be in the matrix
 Postcondition: p_array will replace row p_rowNum,
 	else no change											*/
 void Matrix::setRow(const double p_array[], int p_size, int p_rowNum)
@@ -179,7 +180,7 @@ void Matrix::setRow(const double p_array[], int p_size, int p_rowNum)
 
 /* Purpose: Replace one column in the matrix with p_array
 Precondition: p_array size should match p_size, p_size must equal the
-	number of elements in a row, p_colNum should be in the matrix
+number of elements in a row, p_colNum should be in the matrix
 Postcondition:  p_array will replace column p_colNum,
 	else no change											*/
 void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
@@ -187,7 +188,7 @@ void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
 	if (p_size == m_rows && p_colNum >= 1 && p_colNum <= m_columns)
 	{
 		for (int i = p_colNum - 1; i < m_columns*(m_rows - 1) + p_colNum;
-		 		i += m_columns)
+			 i += m_columns)
 		{
 			m_array[i] = p_array[i / m_columns];
 		}
@@ -205,7 +206,7 @@ void Matrix::resetMatrix(const double p_array[], int p_r, int p_c)
 	m_size = p_r * p_c;
 	m_array = new double[m_size];
 	for (int i = 0; i < m_size; i++)
-		m_array[i] = p_array[i];  // Array containin the elements of the matrix
+		m_array[i] = p_array[i];  // Array containing the elements of the matrix
 }
 
 /*---------------------------------Operations---------------------------------*/
@@ -218,17 +219,17 @@ bool Matrix::checkOperation(const Matrix & other, char oper)
 {
 	// Need to implement this
 	if (oper == '+' || oper == '-')
-	// Addition or subtraction
+		// Addition or subtraction
 	{
 		return (m_columns == other.m_columns && m_rows == other.m_rows);
 	}
 	else if (oper == '*')
-	// Matrix multiplication (Ax=b) where A is host Matrix, x is other
+		// Matrix multiplication (Ax=b) where A is host Matrix, x is other
 	{
 		return (m_columns == other.m_rows);
 	}
 	else if (oper == 'a')
-	// Augment Matrix
+		// Augment Matrix
 	{
 		return (m_rows == other.m_rows);
 	}
@@ -313,8 +314,7 @@ Matrix Matrix::operator*(const Matrix & p_term)
 
 /* Purpose: Sets the calling matrix equal to the term Matrix
 Precondition: Intialized matrices
-Postcondition: The calling matrix will be the same as the term
-	matrix.													*/
+Postcondition: The calling matrix will be the same as the term matrix.	  */
 Matrix & Matrix::operator=(const Matrix & p_term)
 {
 	delete[] m_array;
@@ -344,19 +344,19 @@ Matrix Matrix::inverse()
 			if (m_rows == 1)
 				// Single element
 			{
-				inverse[0] = 1 / m_array[0];
+				inverse[0] = 1.0 / m_array[0];
 			}
 			else if (m_rows == 2)
 				// 2x2 matrix
 			{
-				inverse[0] = m_array[3] / deter;
-				inverse[1] = -1 * m_array[1] / deter;
-				inverse[2] = -1 * m_array[2] / deter;
-				inverse[3] = m_array[0] / deter;
+				inverse[0] = 1.0 * m_array[3] / deter;
+				inverse[1] = -1.0 * m_array[1] / deter;
+				inverse[2] = -1.0 * m_array[2] / deter;
+				inverse[3] = 1.0 * m_array[0] / deter;
 			}
 			else
 			{
-				// Use row reduce reduction
+				// Use row reduce reduction formula, may be rounding issues
 
 			}
 			Matrix invert(inverse, m_rows, m_columns);
@@ -371,7 +371,7 @@ Matrix Matrix::inverse()
 /* Purpose: Augment a matrix
 Precondition: Intialized matrices with the same number of rows
 Postcondition: The calling matrix will add term matrix, creating
-an augmented matrix.   										     */
+	an augmented matrix.   										     */
 void Matrix::augment(const Matrix & p_term)
 {
 	if (m_rows == p_term.m_rows)
@@ -425,9 +425,96 @@ void Matrix::transpose()
 	m_columns = tem;
 }
 
+/* Come back and switch out function calls with the actual code.
+Increases size, runs better though
+Note: there may be some rounding issues*/
+
+/* Purpose: Finds the RREF of the matrix
+Precondition: Intialized matrix
+Postcondition: The matrix will now be in RREF,
+	though note, there may be rounding errors.			*/
 void Matrix::rref()
 {
-
+	// m_columns, m_rows
+	int column = 0;
+	for (int row = 0; row < m_rows; row++)
+	{
+		if (m_array[row * m_columns + column] != 0)
+		{
+			// Reduces the front of the row to 0
+			rowScalar(row + 1, 1.0 / m_array[row * m_columns + column]);
+			// Reduces the rest of the values below to 0
+			for (int i = (row + 1) * m_columns + column; i < m_size;
+				i += m_columns)
+			{
+				if (m_array[i] != 0)
+				{
+					replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+				}
+			}
+			// Reduces the rest of the values above to 0
+			for (int i = column; i < row * m_columns + column; i += m_columns)
+			{
+				if (m_array[i] != 0)
+				{
+					replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+				}
+			}
+		}
+		else
+		{
+			// row interchange with ones below
+			double max = 0,
+				min = 0;
+			int maxRow = 0,
+				minRow = 0;
+			for (int i = (row + 1) * m_columns + column; i < m_size;
+				i += m_columns)
+			{
+				if (m_array[i] < min)
+				{
+					min = m_array[i];
+					minRow = i / m_columns + 1;
+				}
+				else if (m_array[i] > max)
+				{
+					max = m_array[i];
+					maxRow = i / m_columns + 1;
+				}
+			}
+			// if max and min are 0 skip to next row, column
+			// Max and min are checked in case there is a negative value
+			if (max != 0)
+			{
+				interchange(row + 1, maxRow);
+				row--; // Force it to go through the first part of if statement
+				column--;
+			}
+			else if (min != 0)
+			{
+				interchange(row + 1, minRow);
+				row--; // Force it to go through the first part of if statement
+				column--;
+			}
+			else
+			{
+				row--;
+			}
+		}
+		column++;
+		if (column >= m_columns)
+		{
+			return;
+		}
+	}
+	for (int i = 0; i < m_size; i++)
+	{
+		if (m_array[i] == 0)
+			// Fixes problems where 0's sometimes have negative signs after rref
+		{
+			m_array[i] = abs(m_array[i]);
+		}
+	}
 }
 
 /* Purpose: Check if two matrices are the same
@@ -491,18 +578,17 @@ double Matrix::determinant()
 			return (m_array[0] * m_array[4] * m_array[8]
 				  + m_array[1] * m_array[5] * m_array[6]
 				  + m_array[2] * m_array[3] * m_array[7]
-			      - m_array[6] * m_array[4] * m_array[2]
+				  - m_array[6] * m_array[4] * m_array[2]
 				  - m_array[7] * m_array[5] * m_array[0]
 				  - m_array[8] * m_array[3] * m_array[1]);
 		}
 		// n*n, cofactor expansion
 		else
 		{
-			// This will definitely be inefficient, need to improve
+			// This will be a bit inefficient, need to see about improving
 			double deter = 0;
 			Matrix m;
 			double * tempArray = new double[(m_columns - 1) * (m_rows - 1)];
-			// finish implementation of cofactor expansion
 			for (int i = 0; i < m_columns; i++)
 			{
 				if (m_array[i] != 0)
@@ -518,7 +604,7 @@ double Matrix::determinant()
 					}
 					m.resetMatrix(tempArray, m_columns - 1, m_rows - 1);
 					deter += m_array[i] * m.determinant()
-							* pow(-1,i / m_columns + i % m_columns);
+					  	   * pow(-1, i / m_columns + i % m_columns);
 				}
 			}
 			double temp = (1 ^ 4);
@@ -540,7 +626,6 @@ void Matrix::displayMatrix(ostream & out)
 {
 	out << left;
 	if (m_array == 0 || m_size == 0) return;
-	// Take time to format this so it looks better
 	for (int i = 0; i < m_size; i++)
 	{
 		if (i % m_columns != 0 || i == 0)
