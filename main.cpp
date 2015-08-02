@@ -4,7 +4,7 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		8/1/2015
+Date:		8/2/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
@@ -20,6 +20,7 @@ int main()
 	double test3[3] = { 0, 1, 2 };
 	double test4[25] = { 4, 6, -7, 3, -5, 3, 1, 2, 8, 9, 7, 3, -6, 4, -8, 5,
 						2, 5, 2, -3, 2, 4, 9, -1, 2 };
+	double test5[9] = { 1, 3, 3, 1, 4, 3, 1, 3, 4 };
 	Matrix m1, m2(test, 2, 2), m3(m2), m4(test2, 3, 3), m5, m6(test4, 5, 5);
 	cout << "Beginning of Matrix test: \n";
 	// Test, always display ---------------------
@@ -186,7 +187,14 @@ int main()
 	// inverse ---------------------
 	cout << "\nTesting inverse()\n";
 	cout << "\nMatrix 2\n";
-	cout << "\nMatrix 3\n";
+	m2.displayMatrix(cout);
+	cout << "Inverse of Matrix 2:\n";
+	(m2.inverse()).displayMatrix(cout);
+	Matrix m7(test5, 3, 3);
+	cout << "\nMatrix 7\n";
+	m7.displayMatrix(cout);
+	cout << "\nInverse of Matrix 7:\n";
+	(m7.inverse()).displayMatrix(cout);
 
 	// augment ---------------------
 	cout << "\nTesting augment():\n";

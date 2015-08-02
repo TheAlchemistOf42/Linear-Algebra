@@ -4,13 +4,8 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		8/1/2015
+Date:		8/2/2015
 Description: A matrix object allowing one to do mathematics with matrices.
-*/
-
-/* To Do:
--test all added functions
--see if I can optimize functions
 */
 
 #include"Matrix.h"
@@ -361,19 +356,20 @@ Matrix Matrix::inverse()
 				int column = 0;
 				for (int row = 0; row < m_rows; row++)
 				{
+					cout << "Row: " << row << '\n';
 					if (m_array[row * m_columns + column] != 0)
 					{
 						// Reduces the front of the row to 0
-						rowScalar(row + 1, 1.0 / m_array[row * m_columns + column]);
 						invert.rowScalar(row + 1, 1.0 / m_array[row * m_columns + column]);
+						rowScalar(row + 1, 1.0 / m_array[row * m_columns + column]);
 						// Reduces the rest of the values below to 0
 						for (int i = (row + 1) * m_columns + column; i < m_size;
 							i += m_columns)
 						{
 							if (m_array[i] != 0)
 							{
-								replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
 								invert.replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+								replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
 							}
 						}
 						// Reduces the rest of the values above to 0
@@ -381,8 +377,8 @@ Matrix Matrix::inverse()
 						{
 							if (m_array[i] != 0)
 							{
-								replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
 								invert.replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+								replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
 							}
 						}
 					}
@@ -432,10 +428,10 @@ Matrix Matrix::inverse()
 					column++;
 					if (column >= m_columns)
 					{
-						break;
+						cout << "Returning Invert from column:\n";
+						return invert;
 					}
 				}
-				return invert;
 			}
 			Matrix invert(inverse, m_rows, m_columns);
 			delete[] inverse;
