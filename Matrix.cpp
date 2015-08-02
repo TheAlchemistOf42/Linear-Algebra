@@ -356,7 +356,6 @@ Matrix Matrix::inverse()
 				int column = 0;
 				for (int row = 0; row < m_rows; row++)
 				{
-					cout << "Row: " << row << '\n';
 					if (m_array[row * m_columns + column] != 0)
 					{
 						// Reduces the front of the row to 0
@@ -428,7 +427,6 @@ Matrix Matrix::inverse()
 					column++;
 					if (column >= m_columns)
 					{
-						cout << "Returning Invert from column:\n";
 						return invert;
 					}
 				}
