@@ -4,16 +4,14 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/25/2015
+Date:		8/1/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
-// Todo: test operations
-//		add testing harness
+
 #include<iostream>
 #include"Matrix.h"
 using namespace std;
-
-Matrix createIdentity(int I);
+Matrix createIdentity(int R);
 
 int main()
 {
@@ -262,33 +260,4 @@ int main()
 	return 0;
 }
 
-/* Purpose: Create an identity matrix of I^R
-Precondition: R is greater then or equal to 1
-Postcondition: The matrix return will be an Identity matrix,
-R does not meet Precondition, then an empty matrix will be returned*/
-Matrix createIdentity(int R)
-{
-	if (R >= 1)
-	{
-		int insert1 = 0;
-		double * array = new double[R*R];
-		for (int k = 0; k < R*R; k++)
-		{
-			if (k == insert1)
-			{
-				array[k] = 1.0;
-				insert1 += R + 1;
-			}
-			else
-			{
-				array[k] = 0.0;
-			}
-		}
-		Matrix identity(array, R, R);
-		delete[] array;
-		return identity;
-	}
-
-	return Matrix();
-}
 // End of File

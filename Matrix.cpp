@@ -4,18 +4,18 @@ Email:		alcrutcher1s@semo.edu
 College:	Southeast Missouri State University
 Course:		MA345-740 Linear Algebra
 Prof:		Dr. Wang
-Date:		7/27/2015
+Date:		8/1/2015
 Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 /* To Do:
--Implement checkOperation
 -test all added functions
 -see if I can optimize functions
 */
 
 #include"Matrix.h"
 using namespace std;
+Matrix createIdentity(int R);
 
 /*--------------------------------Constructors--------------------------------*/
 
@@ -357,7 +357,85 @@ Matrix Matrix::inverse()
 			else
 			{
 				// Use row reduce reduction formula, may be rounding issues
-
+				Matrix invert = createIdentity(m_columns);
+				int column = 0;
+				for (int row = 0; row < m_rows; row++)
+				{
+					if (m_array[row * m_columns + column] != 0)
+					{
+						// Reduces the front of the row to 0
+						rowScalar(row + 1, 1.0 / m_array[row * m_columns + column]);
+						invert.rowScalar(row + 1, 1.0 / m_array[row * m_columns + column]);
+						// Reduces the rest of the values below to 0
+						for (int i = (row + 1) * m_columns + column; i < m_size;
+							i += m_columns)
+						{
+							if (m_array[i] != 0)
+							{
+								replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+								invert.replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+							}
+						}
+						// Reduces the rest of the values above to 0
+						for (int i = column; i < row * m_columns + column; i += m_columns)
+						{
+							if (m_array[i] != 0)
+							{
+								replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+								invert.replacement(i / m_columns + 1, row + 1, -1.0 * m_array[i]);
+							}
+						}
+					}
+					else
+					{
+						// row interchange with ones below
+						double max = 0,
+							min = 0;
+						int maxRow = 0,
+							minRow = 0;
+						for (int i = (row + 1) * m_columns + column; i < m_size;
+							i += m_columns)
+						{
+							if (m_array[i] < min)
+							{
+								min = m_array[i];
+								minRow = i / m_columns + 1;
+							}
+							else if (m_array[i] > max)
+							{
+								max = m_array[i];
+								maxRow = i / m_columns + 1;
+							}
+						}
+						// if max and min are 0 skip to next row, column
+						// Max and min are checked in case there is a negative value
+						if (max != 0)
+						{
+							interchange(row + 1, maxRow);
+							invert.interchange(row + 1, maxRow);
+							row--; // Force it to go through the first part of if statement
+							column--;
+						}
+						else if (min != 0)
+						{
+							interchange(row + 1, minRow);
+							invert.interchange(row + 1, minRow);
+							row--; // Force it to go through the first part of if statement
+							column--;
+						}
+						else
+						{
+							row--; // Both max and min of ones below are 0
+							// Stay in the same row, move onto the next column
+						}
+					}
+					column++;
+					if (column >= m_columns)
+					{
+						break;
+					}
+				}
+				return invert;
 			}
 			Matrix invert(inverse, m_rows, m_columns);
 			delete[] inverse;
@@ -424,10 +502,6 @@ void Matrix::transpose()
 	m_rows = m_columns;
 	m_columns = tem;
 }
-
-/* Come back and switch out function calls with the actual code.
-Increases size, runs better though
-Note: there may be some rounding issues*/
 
 /* Purpose: Finds the RREF of the matrix
 Precondition: Intialized matrix
@@ -498,13 +572,14 @@ void Matrix::rref()
 			}
 			else
 			{
-				row--;
+				row--; // Both max and min of ones below are 0
+				// Stay in the same row, move onto the next column
 			}
 		}
 		column++;
 		if (column >= m_columns)
 		{
-			return;
+			break;
 		}
 	}
 	for (int i = 0; i < m_size; i++)
@@ -633,6 +708,38 @@ void Matrix::displayMatrix(ostream & out)
 			out << '\n' << setw(3) << m_array[i] << ' ';
 	}
 	out << '\n';
+}
+
+/*-----------------------------Related Functions------------------------------*/
+
+/* Purpose: Create an identity matrix of I^R
+Precondition: R is greater then or equal to 1
+Postcondition: The matrix return will be an Identity matrix,
+R does not meet Precondition, then an empty matrix will be returned*/
+Matrix createIdentity(int R)
+{
+	if (R >= 1)
+	{
+		int insert1 = 0;
+		double * array = new double[R*R];
+		for (int k = 0; k < R*R; k++)
+		{
+			if (k == insert1)
+			{
+				array[k] = 1.0;
+				insert1 += R + 1;
+			}
+			else
+			{
+				array[k] = 0.0;
+			}
+		}
+		Matrix identity(array, R, R);
+		delete[] array;
+		return identity;
+	}
+
+	return Matrix();
 }
 
 // End of File
