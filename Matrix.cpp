@@ -54,23 +54,23 @@ Matrix::~Matrix() { delete[] m_array; }
 /* Purpose: Returns the number of rows in the matrix
 Precondition: Intialized Matrix
 Postcondition: m_rows will be returned              */
-int Matrix::getNumOfRows() const { return m_rows; }
+unsigned Matrix::getNumOfRows() const { return m_rows; }
 
 /* Purpose: Returns the number of columns in the matrix
 Precondition: Intialized Matrix
 Postcondition: m_columns will be returned              */
-int Matrix::getNumOfCols() const { return m_columns; }
+unsigned Matrix::getNumOfCols() const { return m_columns; }
 
 /* Purpose: Returns the number of elements in the matrix
 Precondition: Intialized matrix
 Postcondition: m_size will be returned                 */
-int Matrix::getSize() const { return m_size; }
+unsigned Matrix::getSize() const { return m_size; }
 
 /* Purpose: Returns the a specific element from the matrix
 Precondition: Intialized matrix and valid row and column number
 Postcondition: A specific element will be returned,
 	otherwise 0 will be returned.                        */
-double Matrix::getElement(int p_row, int p_column) const
+double Matrix::getElement(unsigned p_row, unsigned p_column) const
 {
 	if (p_row <= m_rows && p_row >= 1 && p_column <= m_columns && p_column >= 1)
 		return m_array[(p_row - 1) * m_columns + p_column - 1];
@@ -83,7 +83,7 @@ double Matrix::getElement(int p_row, int p_column) const
 Precondition: Intialized matrix, p_r1 and p_r2 are viable rows in the Matrix
 Postcondition: The values of the first row will be swapped with the values
 	of the second row as designated by the parameters		*/
-void Matrix::interchange(int p_r1, int p_r2)
+void Matrix::interchange(unsigned p_r1, unsigned p_r2)
 {
 	if (p_r1 <= m_rows && p_r1 >= 1 &&
 		p_r2 <= m_rows && p_r2 >= 1 &&
@@ -104,7 +104,7 @@ void Matrix::interchange(int p_r1, int p_r2)
 /* Purpose: Multiply a row by a scalar
 Precondition: Intialized matrix, p_row is a viable row in the Matrix
 Postcondition: The values of the row will be multiplied by a scalar */
-void Matrix::rowScalar(int p_row, double p_multiplier)
+void Matrix::rowScalar(unsigned p_row, double p_multiplier)
 {
 	if (p_row <= m_rows && p_row >= 1)
 	{
@@ -117,7 +117,7 @@ void Matrix::rowScalar(int p_row, double p_multiplier)
 Precondition: Intialized matrix, p_rowDest and p_row are viable rows in Matrix
 Postcondition: The values of the first row will be added with the values
 	of the second row times a multiplier and stored in the first row.	*/
-void Matrix::replacement(int p_rowDest, int p_row, double p_multiplier)
+void Matrix::replacement(unsigned p_rowDest, unsigned p_row, double p_multiplier)
 {
 	if (p_rowDest <= m_rows && p_rowDest >= 1 &&
 		p_row <= m_rows && p_row >= 1 &&
@@ -146,7 +146,7 @@ void Matrix::matrixScalar(double p_multiplier)
 Precondition: p_r and p_c must be in the Matrix
 Postcondition:  Element at p_c and p_r will equal p_term;
 	else no change											*/
-void Matrix::setElement(double p_term, int p_r, int p_c)
+void Matrix::setElement(double p_term, unsigned p_r, unsigned p_c)
 {
 	if (p_r <= m_rows && p_r >= 1 && p_c <= m_columns && p_c >= 1)
 		m_array[(p_r - 1) * m_columns + p_c - 1] = p_term;
@@ -157,7 +157,7 @@ Precondition: p_array size should match p_size, p_size must equal the
 number of elements in a row, p_rowNum should be in the matrix
 Postcondition: p_array will replace row p_rowNum,
 	else no change											*/
-void Matrix::setRow(const double p_array[], int p_size, int p_rowNum)
+void Matrix::setRow(const double p_array[], unsigned p_size, unsigned p_rowNum)
 {
 	if (p_size == m_columns && p_rowNum >= 1 && p_rowNum <= m_rows)
 	{
@@ -171,10 +171,9 @@ Precondition: p_array size should match p_size, p_size must equal the
 number of elements in a row, p_colNum should be in the matrix
 Postcondition:  p_array will replace column p_colNum,
 	else no change											*/
-void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
+void Matrix::setColumn(const double p_array[], unsigned p_size, unsigned p_colNum)
 {
-	if (p_size == m_rows && p_colNum >= 1 && p_colNum <= m_columns)
-	{
+	if (p_size == m_rows && p_colNum >= 1 && p_colNum <= m_columns)	{
 		for (int i = p_colNum - 1; i < m_columns*(m_rows - 1) + p_colNum;
 			 i += m_columns)
 			m_array[i] = p_array[i / m_columns];
@@ -184,7 +183,7 @@ void Matrix::setColumn(const double p_array[], int p_size, int p_colNum)
 /* Purpose: Reset a matrix with new size and elements
 Precondition: p_r * p_c should be the number of elements in p_array
 Postcondition:  m_array will contain the elements of p_array,*/
-void Matrix::resetMatrix(const double p_array[], int p_r, int p_c)
+void Matrix::resetMatrix(const double p_array[], unsigned p_r, unsigned p_c)
 {
 	delete[] m_array;
 	m_rows = p_r;
@@ -239,7 +238,7 @@ Precondition: Intialized matrices and both be the same size
 Postcondition: The difference of both matrices will be returned,
 	else the original matrix will be returned.                 */
 Matrix Matrix::operator-(const Matrix & p_term){
-	if (m_rows == p_term.m_rows && m_columns == p_term.m_columns)	{
+	if (m_rows == p_term.m_rows && m_columns == p_term.m_columns) {
 		double * temp = new double[m_size];
 		// check alloc
 		for (int i = 0; i < m_size; i++)
@@ -247,8 +246,7 @@ Matrix Matrix::operator-(const Matrix & p_term){
 		Matrix difference(temp, m_rows, m_columns);
 		delete[] temp;
 		return difference;
-	}
-	else
+	} else
 		return *this;
 }
 
@@ -588,9 +586,9 @@ void Matrix::displayMatrix(std::ostream & out){
 Precondition: R is greater then or equal to 1
 Postcondition: The matrix return will be an Identity matrix,
 R does not meet Precondition, then an empty matrix will be returned*/
-Matrix createIdentity(int R){
+Matrix createIdentity(unsigned R){
 	if (R >= 1)	{
-		int insert1 = 0;
+		unsigned insert1 = 0;
 		double * array = new double[R*R];
 		for (int k = 0; k < R*R; k++){
 			if (k == insert1){

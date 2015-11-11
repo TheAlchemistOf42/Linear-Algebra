@@ -1,6 +1,9 @@
 # Linear-Algebra
 Honor's Project for MA345-Linear Algebra
 
+# Under Construction
+I'm doing some more work on this after my contract was complete to utilize some
+new things and to improve on my old design.
 
 Description:
 

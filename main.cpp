@@ -10,7 +10,7 @@ Description: A matrix object allowing one to do mathematics with matrices.
 
 #include<iostream>
 #include"Matrix.h"
-Matrix createIdentity(int R);
+
 
 int main()
 {

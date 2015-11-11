@@ -9,36 +9,39 @@ Description: A matrix object allowing one to do mathematics with matrices.
 */
 
 #include<iostream>
-#include<iomanip>
 
 class Matrix
 {
 private:
 	double * m_array;   // Array containing the elements of the matrix
-	int m_rows,         // Number of rows in matrix
-		m_columns,      // Number of columns in matrix
-		m_size;         // Number of elements in matrix (m_columns*m_rows)
+	unsigned m_rows,         // Number of rows in matrix
+			 m_columns,      // Number of columns in matrix
+			 m_size;         // Number of elements in matrix (m_columns*m_rows)
 public:
 	// Constructors
 	Matrix();
-	Matrix(const double p_array[], int p_r, int p_c);
+	Matrix(const double p_array[], unsigned p_r, unsigned p_c);
 	Matrix(const Matrix & orig);
 	~Matrix();
 	// Accessors
-	int getNumOfRows() const;
-	int getNumOfCols() const;
-	int getSize() const;
-	double getElement(int p_row, int p_column) const;
+	unsigned getNumOfRows() const;
+	unsigned getNumOfCols() const;
+	unsigned getSize() const;
+	double getElement(unsigned p_row, unsigned p_column) const;
 	// Mutators
-	void interchange(int p_r1, int p_r2);
-	void rowScalar(int p_row, double p_multiplier);
-	void replacement(int p_rowDest, int p_row, double p_multiplier);
+	void interchange(unsigned p_r1, unsigned p_r2);
+	void rowScalar(unsigned p_row, double p_multiplier);
+	void replacement(unsigned p_rowDest, unsigned p_row, double p_multiplier);
 	void matrixScalar(double p_multiplier);
-	void setElement(double p_term, int p_r, int p_c);
-	void setRow(const double p_array[], int p_size, int p_rowNum);
-	void setColumn(const double p_array[], int p_size, int p_colNum);
-	void resetMatrix(const double p_array[], int p_r, int p_c);
+	void setElement(double p_term, unsigned p_r, unsigned p_c);
+	void setRow(const double p_array[], unsigned p_size, unsigned p_rowNum);
+	void setColumn(const double p_array[], unsigned p_size, unsigned p_colNum);
+	void resetMatrix(const double p_array[], unsigned p_r, unsigned p_c);
 
+	// Matrix Operations
+
+
+	// Overloaded Operators
 	// Operations
 	bool checkOperation(const Matrix & other, char oper);
 	Matrix operator+(const Matrix & p_term);
