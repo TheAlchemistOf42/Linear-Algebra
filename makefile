@@ -1,8 +1,8 @@
-main.exe: game.o matrix.o
-	g++ -std=c++11 -Wall -o main game.o nim.o
+test.exe: matrix.o main.o
+	g++ -std=c++11 -Wall -o test main.o matrix.o
 
 main.o: main.cpp matrix.h
-	g++ -std=c++11 -Wall -c -o main.o game.cpp
+	g++ -std=c++11 -Wall -c -o main.o main.cpp
 
 matrix.o: matrix.cpp matrix.h
 	g++ -std=c++11 -Wall -c -o matrix.o matrix.cpp
@@ -14,8 +14,8 @@ cleanAll:
 	erase *.o
 	erase *.exe
 
-build: Nim.exe
+build: test.exe
 
-compile: game.o nim.o
+compile: matrix.o main.o
 
 rebuild: clean compile build
