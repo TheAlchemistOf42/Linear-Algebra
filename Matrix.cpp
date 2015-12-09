@@ -82,8 +82,7 @@ Postcondition: The values of the first row will be swapped with the values
 void Matrix::interchange(unsigned p_r1, unsigned p_r2){
     if (p_r1 <= m_rows && p_r1 >= 1 &&
         p_r2 <= m_rows && p_r2 >= 1 &&
-        p_r1 != p_r2)
-    {
+        p_r1 != p_r2){
         double temp;
         unsigned row2 = (p_r2 - 1)*m_columns;
         for (unsigned i = (p_r1 - 1)*m_columns; i < (p_r1*m_columns); i++){
@@ -220,7 +219,7 @@ Precondition: Intialized matrices and both be the same size
 Postcondition: The difference of both matrices will be returned,
     else the original matrix will be returned.                 */
 Matrix Matrix::operator-(const Matrix & p_term){
-    if (m_rows == p_term.m_rows && m_columns == p_term.m_columns) {
+    if (m_rows == p_term.m_rows && m_columns == p_term.m_columns){
         double * temp = new double[m_size];
         // check alloc
         for (unsigned i = 0; i < m_size; i++)
@@ -431,7 +430,7 @@ void Matrix::rref(){
             double max = 0,    min = 0;
             unsigned maxRow = 0, minRow = 0;
             for (unsigned i = (row + 1) * m_columns + column; i < m_size;
-                i += m_columns)    {
+                i += m_columns){
                 if (m_array[i] < min){
                     min = m_array[i];
                     minRow = i / m_columns + 1;
@@ -517,7 +516,7 @@ double Matrix::determinant(){
             double deter = 0;
             Matrix m;
             double * tempArray = new double[(m_columns - 1) * (m_rows - 1)];
-            for (unsigned i = 0; i < m_columns; i++)    {
+            for (unsigned i = 0; i < m_columns; i++){
                 if (m_array[i] != 0){
                     unsigned newM = 0;
                     for (unsigned orig = m_columns; orig < m_size; orig++){
